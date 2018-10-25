@@ -15,13 +15,6 @@ resource "aws_elb" "bar" {
     lb_protocol       = "http"
   }
 
-  listener {
-    instance_port     = 8000
-    instance_protocol = "http"
-    lb_port           = 443
-    lb_protocol       = "https"
-  }
-
   health_check {
     healthy_threshold   = 2
     unhealthy_threshold = 2
@@ -30,6 +23,7 @@ resource "aws_elb" "bar" {
     interval            = 30
   }
 
+  instances                   = ["${aws_instance.foo.id}"]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
